@@ -33,6 +33,7 @@ jobs:
           AH_EMAIL: ${{ vars.ARTIFACTHUB_EMAIL }}
         run: |
           set -euo pipefail
+          chart_file="$(basename "$(ls .chart-packages/*.tgz | head -1)")"
           pages="$(mktemp -d)"
           git clone --depth 1 --branch gh-pages \
             "https://x-access-token:${GITHUB_TOKEN}@github.com/${OWNER}/${REPO}.git" "$pages"
@@ -57,5 +58,5 @@ jobs:
             echo "chart repository already up to date"
             exit 0
           fi
-          git commit -m "chore: publish helm chart $(basename .chart-packages/*.tgz)"
+          git commit -m "chore: publish helm chart ${chart_file}"
           git push origin HEAD:gh-pages
