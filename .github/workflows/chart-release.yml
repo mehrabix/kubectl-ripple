@@ -27,12 +27,27 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OWNER: ${{ github.repository_owner }}
           REPO: ${{ github.event.repository.name }}
+          # Set these two repository variables to get the "Verified publisher"
+          # badge on Artifact Hub. The email must match the one used to sign in.
+          AH_REPO_ID: ${{ vars.ARTIFACTHUB_REPO_ID }}
+          AH_EMAIL: ${{ vars.ARTIFACTHUB_EMAIL }}
         run: |
           set -euo pipefail
           pages="$(mktemp -d)"
           git clone --depth 1 --branch gh-pages \
             "https://x-access-token:${GITHUB_TOKEN}@github.com/${OWNER}/${REPO}.git" "$pages"
           cp .chart-packages/*.tgz "$pages/"
+
+          # Ownership proof for Artifact Hub: must sit next to index.yaml.
+          if [ -n "${AH_REPO_ID}" ]; then
+            {
+              echo "repositoryID: ${AH_REPO_ID}"
+              echo "owners:"
+              echo "  - name: ${OWNER}"
+              echo "    email: ${AH_EMAIL}"
+            } > "$pages/artifacthub-repo.yml"
+          fi
+
           helm repo index "$pages" --url "https://${OWNER}.github.io/${REPO}"
           cd "$pages"
           git config user.name "github-actions[bot]"
