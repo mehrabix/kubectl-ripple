@@ -1,0 +1,15 @@
+# binaries
+/bin/
+/dist/
+
+# test artefacts
+/coverage.out
+/coverage.html
+
+# editors
+.idea/
+.vscode/
+*.swp
+
+# os
+.DS_Store

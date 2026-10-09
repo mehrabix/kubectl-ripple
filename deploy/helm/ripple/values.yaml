@@ -1,0 +1,73 @@
+# Image
+image:
+  repository: ghcr.io/mehrabix/ripple
+  # Defaults to .Chart.AppVersion when empty.
+  tag: ""
+  pullPolicy: IfNotPresent
+
+# The ripple subcommand the scheduled scan runs.
+#
+#   check   - fail the job when a workload references a ConfigMap or Secret
+#             that does not exist (exit 1)
+#   orphans - list ConfigMaps and Secrets that nothing references
+subcommand: ["check"]
+
+# Arguments passed to the subcommand. The chart appends --include-system and
+# --types automatically based on the values below.
+args: ["-A"]
+
+# Cron schedule for the scan.
+schedule: "0 6 * * *"
+suspend: false
+concurrencyPolicy: Forbid
+startingDeadlineSeconds: 300
+backoffLimit: 0
+activeDeadlineSeconds: 600
+successfulJobsHistoryLimit: 3
+failedJobsHistoryLimit: 3
+restartPolicy: Never
+
+# Report findings in kube-system, kube-public and kube-node-lease too.
+includeSystemNamespaces: false
+
+# Scan Secrets in addition to ConfigMaps. Turning this off removes the
+# cluster-wide secret read permission from the Role as well.
+scanSecrets: true
+
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}
+
+rbac:
+  create: true
+
+podAnnotations: {}
+podLabels: {}
+priorityClassName: ""
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 500m
+    memory: 256Mi
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  fsGroup: 65532
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  capabilities:
+    drop: ["ALL"]

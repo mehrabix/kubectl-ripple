@@ -1,0 +1,165 @@
+# Test fixtures for the ripple end-to-end test.
+# Deliberately covers every reference mode ripple knows about.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  log-level: info
+  feature-a: "true"
+  feature-b: "false"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: unused-config
+data:
+  nobody: reads-this
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-creds
+type: Opaque
+stringData:
+  password: hunter2
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: tls-cert
+type: Opaque
+stringData:
+  tls.crt: fake
+  tls.key: fake
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: registry-creds
+type: kubernetes.io/dockerconfigjson
+stringData:
+  .dockerconfigjson: '{"auths":{}}'
+---
+# env + envFrom  -> a change needs a restart
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: web}
+  template:
+    metadata:
+      labels: {app: web}
+    spec:
+      imagePullSecrets:
+        - name: registry-creds
+      containers:
+        - name: app
+          image: registry.k8s.io/pause:3.10
+          envFrom:
+            - configMapRef:
+                name: app-config
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-creds
+                  key: password
+---
+# volume (no items) -> live reload
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: worker}
+  template:
+    metadata:
+      labels: {app: worker}
+    spec:
+      containers:
+        - name: worker
+          image: registry.k8s.io/pause:3.10
+          volumeMounts:
+            - name: cfg
+              mountPath: /etc/cfg
+      volumes:
+        - name: cfg
+          configMap:
+            name: app-config
+---
+# volume mounted with subPath -> NOT refreshed, restart required
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: db
+spec:
+  serviceName: db
+  replicas: 1
+  selector:
+    matchLabels: {app: db}
+  template:
+    metadata:
+      labels: {app: db}
+    spec:
+      containers:
+        - name: db
+          image: registry.k8s.io/pause:3.10
+          volumeMounts:
+            - name: tls
+              mountPath: /etc/tls/tls.crt
+              subPath: tls.crt
+      volumes:
+        - name: tls
+          secret:
+            secretName: tls-cert
+---
+# a single key read through env
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: nightly
+spec:
+  schedule: "0 3 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: job
+              image: registry.k8s.io/pause:3.10
+              env:
+                - name: LOG_LEVEL
+                  valueFrom:
+                    configMapKeyRef:
+                      name: app-config
+                      key: log-level
+---
+# references an object that does not exist -> check must fail
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: broken
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: broken}
+  template:
+    metadata:
+      labels: {app: broken}
+    spec:
+      containers:
+        - name: app
+          image: registry.k8s.io/pause:3.10
+          env:
+            - name: TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: ghost-secret
+                  key: token

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  # unchanged: only nightly reads this key, so nightly must be unaffected
+  log-level: info
+  # changed: web and worker must be affected
+  feature-a: "false"
+  feature-b: "false"
+  # added
+  feature-c: "new"

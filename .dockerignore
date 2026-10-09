@@ -1,0 +1,7 @@
+bin/
+dist/
+.git/
+.github/
+test/
+coverage.out
+coverage.html

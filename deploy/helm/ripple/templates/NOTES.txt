@@ -1,0 +1,22 @@
+ripple is installed as a scheduled scan.
+
+  release    : {{ .Release.Name }}
+  namespace  : {{ .Release.Namespace }}
+  schedule   : {{ .Values.schedule }}
+  subcommand : {{ join " " .Values.subcommand }} {{ join " " .Values.args }}
+
+The job runs `ripple {{ join " " .Values.subcommand }}` every {{ .Values.schedule }}.
+
+{{- if eq (join " " .Values.subcommand) "check" }}
+
+`check` exits 1 when a workload references a ConfigMap or Secret that does not
+exist, so the Job is marked Failed. Alert on failed Jobs to catch broken
+configuration before it reaches a rollout:
+
+  kubectl get jobs -n {{ .Release.Namespace }} -l app.kubernetes.io/instance={{ .Release.Name }}
+{{- end }}
+
+Run a scan right now without waiting for the schedule:
+
+  kubectl create job --from=cronjob/{{ include "ripple.fullname" . }} ripple-now -n {{ .Release.Namespace }}
+  kubectl logs -n {{ .Release.Namespace }} job/ripple-now
