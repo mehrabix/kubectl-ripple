@@ -1,0 +1,60 @@
+apiVersion: krew.googlecontainertools.github.com/v1alpha2
+kind: Plugin
+metadata:
+  name: ripple
+spec:
+  version: v0.1.0
+  homepage: https://github.com/mehrabix/kubectl-ripple
+  shortDescription: See what a ConfigMap or Secret change will break
+  description: |
+    ripple maps the ConfigMaps and Secrets that workloads consume and reports
+    what a change or a delete will actually do: which workloads restart, which
+    reload in place, which are unaffected, and which objects nothing references.
+
+    Read-only, deterministic and offline. No agent, no LLM.
+  caveats: |
+    ripple never modifies your cluster. It needs get/list on ConfigMaps,
+    Secrets and the pod-template workload kinds.
+  platforms:
+    - selector:
+        matchLabels:
+          os: linux
+          arch: amd64
+      uri: https://github.com/mehrabix/kubectl-ripple/releases/download/v0.1.0/kubectl-ripple_0.1.0_linux_amd64.tar.gz
+      sha256: 8e9dc6896777060587ad00a0541bfdc54757751d8ae0aa0cccbbfc487fe8012f
+      bin: kubectl-ripple
+    - selector:
+        matchLabels:
+          os: linux
+          arch: arm64
+      uri: https://github.com/mehrabix/kubectl-ripple/releases/download/v0.1.0/kubectl-ripple_0.1.0_linux_arm64.tar.gz
+      sha256: df2d30343e94ec371d487980e0f722aadebcbbdf774db7488c6efdf8d66f2e81
+      bin: kubectl-ripple
+    - selector:
+        matchLabels:
+          os: darwin
+          arch: amd64
+      uri: https://github.com/mehrabix/kubectl-ripple/releases/download/v0.1.0/kubectl-ripple_0.1.0_darwin_amd64.tar.gz
+      sha256: 7f1098a53e9d551ccf0c089be35ad1a276fc7274398d25b89d76265e60c66399
+      bin: kubectl-ripple
+    - selector:
+        matchLabels:
+          os: darwin
+          arch: arm64
+      uri: https://github.com/mehrabix/kubectl-ripple/releases/download/v0.1.0/kubectl-ripple_0.1.0_darwin_arm64.tar.gz
+      sha256: 9ae338b778fe6dd778c5ac2665b4b2217c74dede791f117c4972621a8cd52bed
+      bin: kubectl-ripple
+    - selector:
+        matchLabels:
+          os: windows
+          arch: amd64
+      uri: https://github.com/mehrabix/kubectl-ripple/releases/download/v0.1.0/kubectl-ripple_0.1.0_windows_amd64.zip
+      sha256: 0f6647137d7b6dd47aa55be31141adc2ffba113585991b677ffbba5046ead657
+      bin: kubectl-ripple.exe
+    - selector:
+        matchLabels:
+          os: windows
+          arch: arm64
+      uri: https://github.com/mehrabix/kubectl-ripple/releases/download/v0.1.0/kubectl-ripple_0.1.0_windows_arm64.zip
+      sha256: 0574acb67395f12795f9f9d402a48b99e8c4a477325988817f2ae1702158a9db
+      bin: kubectl-ripple.exe

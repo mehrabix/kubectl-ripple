@@ -20,8 +20,8 @@ sums="$(mktemp)"
 trap 'rm -f "$sums" "$sums.new"' EXIT
 curl -fsSL "${URI_BASE}/checksums.txt" -o "$sums"
 
-entry() { # os arch suffix
-  local os="$1" arch="$2" ext="$3" name sha
+entry() { # os arch ext exe
+  local os="$1" arch="$2" ext="$3" exe="${4:-}" name sha
   name="kubectl-ripple_${semver}_${os}_${arch}.${ext}"
   sha="$(awk -v n="$name" '$2 == n {print $1}' "$sums")"
   if [ -z "$sha" ]; then
@@ -31,11 +31,11 @@ entry() { # os arch suffix
   cat <<EOF
     - selector:
         matchLabels:
-          os: $(echo "$os" | tr '[:upper:]' '[:lower:]')
-          arch: ${arch/x86_64/amd64}
+          os: ${os}
+          arch: ${arch}
       uri: ${URI_BASE}/${name}
       sha256: ${sha}
-      bin: kubectl-ripple${4}
+      bin: kubectl-ripple${exe}
 EOF
 }
 
@@ -58,12 +58,12 @@ spec:
     ripple never modifies your cluster. It needs get/list on ConfigMaps,
     Secrets and the pod-template workload kinds.
   platforms:
-$(entry Linux x86_64 tar.gz)
-$(entry Linux arm64 tar.gz)
-$(entry Darwin x86_64 tar.gz)
-$(entry Darwin arm64 tar.gz)
-$(entry Windows x86_64 zip .exe)
-$(entry Windows arm64 zip .exe)
+$(entry linux amd64 tar.gz)
+$(entry linux arm64 tar.gz)
+$(entry darwin amd64 tar.gz)
+$(entry darwin arm64 tar.gz)
+$(entry windows amd64 zip .exe)
+$(entry windows arm64 zip .exe)
 EOF
 
 if [ "$MODE" = "--check" ]; then
