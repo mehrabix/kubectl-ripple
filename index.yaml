@@ -11,9 +11,9 @@ entries:
           url: https://github.com/mehrabix/kubectl-ripple#install
     apiVersion: v2
     appVersion: 0.1.0
-    created: "2026-10-09T07:55:20.438561607Z"
+    created: "2026-10-09T08:10:33.484420776Z"
     description: Scheduled ConfigMap and Secret reference checks for Kubernetes
-    digest: c300817e8ebf0c3c65fd1ada43f6f5fe1d3d05b5b155856b5ddc43df5212d9c3
+    digest: a75913d6e0897b49e47c059324e45a22f6ca650c370fd4ca349faf5364c650c5
     home: https://github.com/mehrabix/kubectl-ripple
     keywords:
     - configmap
@@ -42,7 +42,7 @@ entries:
           url: https://github.com/mehrabix/kubectl-ripple#install
     apiVersion: v2
     appVersion: 0.1.0
-    created: "2026-10-09T07:55:20.438244647Z"
+    created: "2026-10-09T08:10:33.483960335Z"
     description: Scheduled ConfigMap and Secret reference checks for Kubernetes
     digest: c48a850f4549d8b2f3ac9a496fa9a74143290b923e5cf3d3adb62917a829f304
     home: https://github.com/mehrabix/kubectl-ripple
@@ -63,4 +63,4 @@ entries:
     urls:
     - https://mehrabix.github.io/kubectl-ripple/ripple-0.1.0.tgz
     version: 0.1.0
-generated: "2026-10-09T07:55:20.437769513Z"
+generated: "2026-10-09T08:10:33.483232865Z"
