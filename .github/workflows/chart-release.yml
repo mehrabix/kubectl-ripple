@@ -38,6 +38,9 @@ jobs:
           git clone --depth 1 --branch gh-pages \
             "https://x-access-token:${GITHUB_TOKEN}@github.com/${OWNER}/${REPO}.git" "$pages"
           cp .chart-packages/*.tgz "$pages/"
+          # the chart repository root has no index.html by default, so serve a
+          # small landing page instead of a 404
+          cp deploy/pages/index.html "$pages/index.html"
 
           # Ownership proof for Artifact Hub: must sit next to index.yaml.
           # repositoryID alone is enough for the "Verified publisher" badge;
