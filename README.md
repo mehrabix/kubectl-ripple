@@ -149,9 +149,13 @@ fails the Job when it finds something, so you can alert on configuration rot
 without anyone remembering to look.
 
 ```bash
-helm install ripple oci://ghcr.io/mehrabix/charts/ripple \
+helm repo add ripple https://mehrabix.github.io/kubectl-ripple
+helm repo update
+helm install ripple-scan ripple/ripple \
   --namespace ripple-system --create-namespace
 ```
+
+The chart is also published to `oci://ghcr.io/mehrabix/charts/ripple`.
 
 | Value | Default | Description |
 |---|---|---|
