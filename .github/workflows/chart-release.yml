@@ -40,12 +40,16 @@ jobs:
           cp .chart-packages/*.tgz "$pages/"
 
           # Ownership proof for Artifact Hub: must sit next to index.yaml.
+          # repositoryID alone is enough for the "Verified publisher" badge;
+          # the owners block is only needed to claim an existing repository.
           if [ -n "${AH_REPO_ID}" ]; then
             {
               echo "repositoryID: ${AH_REPO_ID}"
-              echo "owners:"
-              echo "  - name: ${OWNER}"
-              echo "    email: ${AH_EMAIL}"
+              if [ -n "${AH_EMAIL}" ]; then
+                echo "owners:"
+                echo "  - name: ${OWNER}"
+                echo "    email: ${AH_EMAIL}"
+              fi
             } > "$pages/artifacthub-repo.yml"
           fi
 
