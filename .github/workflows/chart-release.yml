@@ -1,0 +1,30 @@
+name: chart-release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "deploy/helm/**"
+      - ".github/workflows/chart-release.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: publish the chart
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: azure/setup-helm@v4
+      - name: lint
+        run: helm lint deploy/helm/ripple
+      - uses: helm/chart-releaser-action@v1.7.0
+        with:
+          charts_dir: deploy/helm
+          skip_existing: true
+        env:
+          CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
