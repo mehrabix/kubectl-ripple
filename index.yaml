@@ -1,0 +1,35 @@
+apiVersion: v1
+entries:
+  ripple:
+  - annotations:
+      artifacthub.io/category: monitoring-logging
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: source
+          url: https://github.com/mehrabix/kubectl-ripple
+        - name: krew
+          url: https://github.com/mehrabix/kubectl-ripple#install
+    apiVersion: v2
+    appVersion: 0.1.0
+    created: "2026-10-09T07:42:35.297218701Z"
+    description: Scheduled ConfigMap and Secret reference checks for Kubernetes
+    digest: 9bb7574ef168fea2fd0b5341636bd99b377b597a42ee0acfce140f0a87772d7c
+    home: https://github.com/mehrabix/kubectl-ripple
+    keywords:
+    - configmap
+    - secret
+    - configuration
+    - audit
+    - lint
+    - gitops
+    maintainers:
+    - name: mehrabix
+      url: https://github.com/mehrabix
+    name: ripple
+    sources:
+    - https://github.com/mehrabix/kubectl-ripple
+    type: application
+    urls:
+    - https://mehrabix.github.io/kubectl-ripple/ripple-0.1.0.tgz
+    version: 0.1.0
+generated: "2026-10-09T07:42:35.296569721Z"
