@@ -4,6 +4,7 @@
   <p align="center">
     <a href="https://github.com/mehrabix/kubectl-ripple/actions/workflows/ci.yml"><img alt="ci" src="https://github.com/mehrabix/kubectl-ripple/actions/workflows/ci.yml/badge.svg"></a>
     <a href="https://github.com/mehrabix/kubectl-ripple/releases/latest"><img alt="release" src="https://img.shields.io/github/v/release/mehrabix/kubectl-ripple"></a>
+    <a href="https://artifacthub.io/packages/helm/ripple/ripple"><img alt="Artifact Hub" src="https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/ripple"></a>
     <a href="LICENSE"><img alt="license" src="https://img.shields.io/badge/license-Apache--2.0-blue"></a>
     <img alt="read-only" src="https://img.shields.io/badge/cluster%20access-read--only-brightgreen">
   </p>
