@@ -12,19 +12,35 @@ permissions:
   contents: write
 
 jobs:
-  release:
+  publish:
     name: publish the chart
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
       - uses: azure/setup-helm@v4
       - name: lint
         run: helm lint deploy/helm/ripple
-      - uses: helm/chart-releaser-action@v1.7.0
-        with:
-          charts_dir: deploy/helm
-          skip_existing: true
+      - name: package
+        run: helm package deploy/helm/ripple --destination .chart-packages
+      - name: publish to the gh-pages chart repository
         env:
-          CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
+        run: |
+          set -euo pipefail
+          pages="$(mktemp -d)"
+          git clone --depth 1 --branch gh-pages \
+            "https://x-access-token:${GITHUB_TOKEN}@github.com/${OWNER}/${REPO}.git" "$pages"
+          cp .chart-packages/*.tgz "$pages/"
+          helm repo index "$pages" --url "https://${OWNER}.github.io/${REPO}"
+          cd "$pages"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "chart repository already up to date"
+            exit 0
+          fi
+          git commit -m "chore: publish helm chart $(basename .chart-packages/*.tgz)"
+          git push origin HEAD:gh-pages
