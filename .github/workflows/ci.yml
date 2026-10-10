@@ -33,6 +33,21 @@ jobs:
       - name: build
         run: go build ./...
 
+  vuln:
+    name: vuln
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache: true
+      # Artifact Hub runs Trivy over the published image and shows the count on
+      # the chart page, so a dependency regression is visible to users. Catch it
+      # here instead, against the code paths that actually call into the module.
+      - name: govulncheck
+        run: go run golang.org/x/vuln/cmd/govulncheck@latest ./...
+
   e2e:
     name: e2e
     runs-on: ubuntu-latest
