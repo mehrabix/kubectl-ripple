@@ -10,8 +10,39 @@ entries:
         - name: krew
           url: https://github.com/mehrabix/kubectl-ripple#install
     apiVersion: v2
+    appVersion: 0.1.1
+    created: "2026-10-10T18:37:29.130476929Z"
+    description: Scheduled ConfigMap and Secret reference checks for Kubernetes
+    digest: 9030a4e329837bec3725268cb000ea679dd146b2648800d198e5a497edf82c84
+    home: https://github.com/mehrabix/kubectl-ripple
+    keywords:
+    - configmap
+    - secret
+    - configuration
+    - audit
+    - lint
+    - gitops
+    maintainers:
+    - name: mehrabix
+      url: https://github.com/mehrabix
+    name: ripple
+    sources:
+    - https://github.com/mehrabix/kubectl-ripple
+    type: application
+    urls:
+    - https://mehrabix.github.io/kubectl-ripple/ripple-0.1.2.tgz
+    version: 0.1.2
+  - annotations:
+      artifacthub.io/category: monitoring-logging
+      artifacthub.io/license: Apache-2.0
+      artifacthub.io/links: |
+        - name: source
+          url: https://github.com/mehrabix/kubectl-ripple
+        - name: krew
+          url: https://github.com/mehrabix/kubectl-ripple#install
+    apiVersion: v2
     appVersion: 0.1.0
-    created: "2026-10-09T08:10:33.484420776Z"
+    created: "2026-10-10T18:37:29.130049248Z"
     description: Scheduled ConfigMap and Secret reference checks for Kubernetes
     digest: a75913d6e0897b49e47c059324e45a22f6ca650c370fd4ca349faf5364c650c5
     home: https://github.com/mehrabix/kubectl-ripple
@@ -42,7 +73,7 @@ entries:
           url: https://github.com/mehrabix/kubectl-ripple#install
     apiVersion: v2
     appVersion: 0.1.0
-    created: "2026-10-09T08:10:33.483960335Z"
+    created: "2026-10-10T18:37:29.129631064Z"
     description: Scheduled ConfigMap and Secret reference checks for Kubernetes
     digest: c48a850f4549d8b2f3ac9a496fa9a74143290b923e5cf3d3adb62917a829f304
     home: https://github.com/mehrabix/kubectl-ripple
@@ -63,4 +94,4 @@ entries:
     urls:
     - https://mehrabix.github.io/kubectl-ripple/ripple-0.1.0.tgz
     version: 0.1.0
-generated: "2026-10-09T08:10:33.483232865Z"
+generated: "2026-10-10T18:37:29.129064442Z"
